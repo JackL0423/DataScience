@@ -146,3 +146,17 @@ def random_distances(dim: int, num_pairs: int) -> List[float]:
     return [distance(random_point(dim), random_point(dim))
             for _ in range(num_pairs)]
 
+import tqdm
+dimensions = range(1, 101)
+
+avg_distances = []
+min_distances = []
+
+random.seed(0)
+for dim in tqdm.tqdm(dimensions, desc="Curse of Dimensionality"):
+    distances = random_distances(dim, 10000)        # 10,000 random pairs
+    avg_distances.append(sum(distances) / 10000)    # track the average
+    min_distances.append(min(distances))            # track the minimum
+
+min_avg_ratio = [min_dist / avg_dist
+                 for min_dist, avg_dist in zip(min_distances, avg_distances)]
